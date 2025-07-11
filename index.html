@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Daily Duel with Password & Weekly Tally</title>
+  <title>Wellness Tracker</title>
   <style>
     body { font-family: Arial, sans-serif; max-width: 500px; margin: 20px auto; }
     h1, h2 { text-align: center; }
@@ -12,19 +12,23 @@
   </style>
 </head>
 <body>
+  <!-- Strong password gate -->
   <script>
-    const correctPassword = '061815'; // Change this password
+    const correctPassword = '061815'; // your password
+    document.documentElement.style.display = 'none';
 
-    let entered = prompt('Enter password to access the app:');
+    const entered = prompt('Enter password to access the app:');
     if (entered !== correctPassword) {
-      alert('Wrong password. Access denied.');
       document.body.innerHTML = '<h1 style="text-align:center; margin-top:50px;">Access Denied</h1>';
+      document.documentElement.style.display = 'block';
       throw new Error('Access denied');
+    } else {
+      document.documentElement.style.display = 'block';
     }
   </script>
 
   <div id="appContent">
-    <h1>Daily Duel: Track Your Points</h1>
+    <h1>Wellness Tracker</h1>
 
     <label>
       Select Player:
@@ -45,13 +49,13 @@
     </div>
 
     <div id="scores">
-      <h2>Current Scores</h2>
+      <h2>Total Scores</h2>
       <p>Jonathan: <span id="score-Jonathan">0</span></p>
       <p>Wife: <span id="score-Wife">0</span></p>
     </div>
 
     <div id="weeklyTally">
-      <h2>This Week's Points</h2>
+      <h2>This Week</h2>
       <p>Jonathan: <span id="weekly-Jonathan">0</span></p>
       <p>Wife: <span id="weekly-Wife">0</span></p>
     </div>
@@ -61,66 +65,50 @@
 
   <script>
     const players = ['Jonathan', 'Wife'];
-    // Store all actions as an array of {player, points, action, timestamp}
     let actionLog = [];
 
-    // Load saved data
     function loadData() {
-      const saved = localStorage.getItem('dailyDuelActionLog');
-      if (saved) {
-        actionLog = JSON.parse(saved);
-      } else {
-        actionLog = [];
-      }
+      const saved = localStorage.getItem('wellnessTrackerLog');
+      if (saved) actionLog = JSON.parse(saved);
     }
 
-    // Save data
     function saveData() {
-      localStorage.setItem('dailyDuelActionLog', JSON.stringify(actionLog));
+      localStorage.setItem('wellnessTrackerLog', JSON.stringify(actionLog));
     }
 
-    // Calculate total scores from actionLog
     function calculateTotalScores() {
-      let scores = { Jonathan: 0, Wife: 0 };
-      actionLog.forEach(entry => {
-        scores[entry.player] += entry.points;
-      });
-      return scores;
+      return players.reduce((totals, player) => {
+        totals[player] = actionLog
+          .filter(entry => entry.player === player)
+          .reduce((sum, entry) => sum + entry.points, 0);
+        return totals;
+      }, {});
     }
 
-    // Calculate weekly scores (current week starting Monday)
     function calculateWeeklyScores() {
-      let scores = { Jonathan: 0, Wife: 0 };
       const now = new Date();
-      const day = now.getDay(); // Sunday = 0, Monday = 1, ...
-      const diffToMonday = (day + 6) % 7; // days since Monday
+      const dayOfWeek = (now.getDay() + 6) % 7; // Make Monday = 0
       const monday = new Date(now);
       monday.setHours(0,0,0,0);
-      monday.setDate(now.getDate() - diffToMonday);
+      monday.setDate(now.getDate() - dayOfWeek);
 
-      actionLog.forEach(entry => {
-        const entryDate = new Date(entry.timestamp);
-        if (entryDate >= monday) {
-          scores[entry.player] += entry.points;
-        }
-      });
-      return scores;
+      return players.reduce((totals, player) => {
+        totals[player] = actionLog
+          .filter(entry => entry.player === player && new Date(entry.timestamp) >= monday)
+          .reduce((sum, entry) => sum + entry.points, 0);
+        return totals;
+      }, {});
     }
 
-    // Update score displays
     function updateScores() {
-      const totalScores = calculateTotalScores();
+      const totals = calculateTotalScores();
+      const weekly = calculateWeeklyScores();
       players.forEach(player => {
-        document.getElementById(`score-${player}`).textContent = totalScores[player];
-      });
-
-      const weeklyScores = calculateWeeklyScores();
-      players.forEach(player => {
-        document.getElementById(`weekly-${player}`).textContent = weeklyScores[player];
+        document.getElementById(`score-${player}`).textContent = totals[player];
+        document.getElementById(`weekly-${player}`).textContent = weekly[player];
       });
     }
 
-    // Add event listeners to action buttons
     document.querySelectorAll('#actions button').forEach(btn => {
       btn.addEventListener('click', () => {
         const player = document.getElementById('playerSelect').value;
@@ -129,23 +117,20 @@
         const timestamp = new Date().toISOString();
 
         actionLog.push({ player, points, action, timestamp });
-        alert(`${player} earned ${points} points for "${action}"!`);
-
         saveData();
         updateScores();
+        alert(`${player} earned ${points} pts for "${action}"!`);
       });
     });
 
-    // Reset data button
     document.getElementById('resetBtn').addEventListener('click', () => {
-      if (confirm('Reset all data? This cannot be undone.')) {
+      if (confirm('Reset all scores and logs?')) {
         actionLog = [];
         saveData();
         updateScores();
       }
     });
 
-    // Initialize
     loadData();
     updateScores();
     document.getElementById('appContent').style.display = 'block';
