@@ -3,44 +3,118 @@
 <head>
   <meta charset="UTF-8" />
   <title>Wellness Tracker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    body { font-family: Arial, sans-serif; max-width: 500px; margin: 20px auto; }
-    h1, h2 { text-align: center; }
-    button { margin: 5px; padding: 10px 15px; font-size: 16px; }
-    #scores, #weeklyTally { margin-top: 20px; }
+    :root {
+      --primary: #2e7d32;
+      --light-bg: #f5f5f5;
+      --card-bg: white;
+      --text: #333;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--light-bg);
+      color: var(--text);
+      margin: 0;
+      padding: 1rem;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    h1, h2 {
+      text-align: center;
+      margin: 1rem 0;
+    }
+
+    select {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-left: 10px;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
+    }
+
+    .button-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    button {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    button:hover {
+      background-color: #1b5e20;
+    }
+
+    .score-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+    }
+
+    #resetBtn {
+      background: #d32f2f;
+      margin: 0 auto;
+      display: block;
+    }
   </style>
 </head>
 <body>
   <h1>Wellness Tracker</h1>
 
-  <label>
-    Select Player:
-    <select id="playerSelect">
-      <option value="Husband">Husband</option>
-      <option value="Wife">Wife</option>
-    </select>
-  </label>
-
-  <div id="actions">
-    <button data-points="5" data-action="Workout">Workout (+5)</button>
-    <button data-points="3" data-action="Clean Kitchen">Clean Kitchen (+3)</button>
-    <button data-points="4" data-action="Cook Meal">Cook Meal (+4)</button>
-    <button data-points="2" data-action="Meditate">Meditate (+2)</button>
-    <button data-points="2" data-action="Journal">Journal (+2)</button>
-    <button data-points="4" data-action="Creative Task">Creative Task (+4)</button>
-    <button data-points="2" data-action="Orgasm">Orgasm (+2)</button>
+  <div class="card">
+    <label>
+      Select Player:
+      <select id="playerSelect">
+        <option value="Husband">Husband</option>
+        <option value="Wife">Wife</option>
+      </select>
+    </label>
   </div>
 
-  <div id="scores">
+  <div class="card">
+    <h2>Log Activity</h2>
+    <div class="button-grid">
+      <button data-points="5" data-action="Workout">Workout</button>
+      <button data-points="3" data-action="Clean Kitchen">Clean Kitchen</button>
+      <button data-points="4" data-action="Cook Meal">Cook Meal</button>
+      <button data-points="2" data-action="Meditate">Meditate</button>
+      <button data-points="2" data-action="Journal">Journal</button>
+      <button data-points="4" data-action="Creative Task">Creative</button>
+      <button data-points="2" data-action="Orgasm">Orgasm</button>
+    </div>
+  </div>
+
+  <div class="card">
     <h2>Total Scores</h2>
-    <p>Husband: <span id="score-Husband">0</span></p>
-    <p>Wife: <span id="score-Wife">0</span></p>
+    <div class="score-row"><strong>Husband:</strong> <span id="score-Husband">0</span></div>
+    <div class="score-row"><strong>Wife:</strong> <span id="score-Wife">0</span></div>
   </div>
 
-  <div id="weeklyTally">
+  <div class="card">
     <h2>This Week</h2>
-    <p>Husband: <span id="weekly-Husband">0</span></p>
-    <p>Wife: <span id="weekly-Wife">0</span></p>
+    <div class="score-row"><strong>Husband:</strong> <span id="weekly-Husband">0</span></div>
+    <div class="score-row"><strong>Wife:</strong> <span id="weekly-Wife">0</span></div>
   </div>
 
   <button id="resetBtn">Reset All Data</button>
@@ -69,7 +143,7 @@
 
     function calculateWeeklyScores() {
       const now = new Date();
-      const dayOfWeek = (now.getDay() + 6) % 7; // Make Monday = 0
+      const dayOfWeek = (now.getDay() + 6) % 7; // Monday = 0
       const monday = new Date(now);
       monday.setHours(0,0,0,0);
       monday.setDate(now.getDate() - dayOfWeek);
@@ -91,7 +165,7 @@
       });
     }
 
-    document.querySelectorAll('#actions button').forEach(btn => {
+    document.querySelectorAll('#actions button, .button-grid button').forEach(btn => {
       btn.addEventListener('click', () => {
         const player = document.getElementById('playerSelect').value;
         const points = parseInt(btn.dataset.points, 10);
