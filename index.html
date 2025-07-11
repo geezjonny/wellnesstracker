@@ -8,45 +8,42 @@
     h1, h2 { text-align: center; }
     button { margin: 5px; padding: 10px 15px; font-size: 16px; }
     #scores, #weeklyTally { margin-top: 20px; }
-    #appContent { display: none; }
   </style>
 </head>
 <body>
-  <div id="appContent">
-    <h1>Wellness Tracker</h1>
+  <h1>Wellness Tracker</h1>
 
-    <label>
-      Select Player:
-      <select id="playerSelect">
-        <option value="Jonathan">Jonathan</option>
-        <option value="Wife">Wife</option>
-      </select>
-    </label>
+  <label>
+    Select Player:
+    <select id="playerSelect">
+      <option value="Jonathan">Jonathan</option>
+      <option value="Wife">Wife</option>
+    </select>
+  </label>
 
-    <div id="actions">
-      <button data-points="5" data-action="Workout">Workout (+5)</button>
-      <button data-points="3" data-action="Clean Kitchen">Clean Kitchen (+3)</button>
-      <button data-points="4" data-action="Cook Meal">Cook Meal (+4)</button>
-      <button data-points="2" data-action="Meditate">Meditate (+2)</button>
-      <button data-points="2" data-action="Journal">Journal (+2)</button>
-      <button data-points="4" data-action="Creative Task">Creative Task (+4)</button>
-      <button data-points="2" data-action="Orgasm">Orgasm (+2)</button>
-    </div>
-
-    <div id="scores">
-      <h2>Total Scores</h2>
-      <p>Jonathan: <span id="score-Jonathan">0</span></p>
-      <p>Wife: <span id="score-Wife">0</span></p>
-    </div>
-
-    <div id="weeklyTally">
-      <h2>This Week</h2>
-      <p>Jonathan: <span id="weekly-Jonathan">0</span></p>
-      <p>Wife: <span id="weekly-Wife">0</span></p>
-    </div>
-
-    <button id="resetBtn">Reset All Data</button>
+  <div id="actions">
+    <button data-points="5" data-action="Workout">Workout (+5)</button>
+    <button data-points="3" data-action="Clean Kitchen">Clean Kitchen (+3)</button>
+    <button data-points="4" data-action="Cook Meal">Cook Meal (+4)</button>
+    <button data-points="2" data-action="Meditate">Meditate (+2)</button>
+    <button data-points="2" data-action="Journal">Journal (+2)</button>
+    <button data-points="4" data-action="Creative Task">Creative Task (+4)</button>
+    <button data-points="2" data-action="Orgasm">Orgasm (+2)</button>
   </div>
+
+  <div id="scores">
+    <h2>Total Scores</h2>
+    <p>Jonathan: <span id="score-Jonathan">0</span></p>
+    <p>Wife: <span id="score-Wife">0</span></p>
+  </div>
+
+  <div id="weeklyTally">
+    <h2>This Week</h2>
+    <p>Jonathan: <span id="weekly-Jonathan">0</span></p>
+    <p>Wife: <span id="weekly-Wife">0</span></p>
+  </div>
+
+  <button id="resetBtn">Reset All Data</button>
 
   <script>
     const players = ['Jonathan', 'Wife'];
@@ -118,7 +115,6 @@
 
     loadData();
     updateScores();
-    document.getElementById('appContent').style.display = 'block';
   </script>
 </body>
 </html>
