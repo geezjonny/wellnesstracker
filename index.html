@@ -1,126 +1,179 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 <head>
   <meta charset="UTF-8" />
   <title>Wellness Tracker</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
     :root {
       --primary: #2e7d32;
+      --primary-dark: #1b5e20;
       --light-bg: #f5f5f5;
       --card-bg: white;
       --text: #333;
     }
 
     body {
+      margin: 0;
       font-family: 'Inter', sans-serif;
       background-color: var(--light-bg);
       color: var(--text);
-      margin: 0;
-      padding: 1rem;
-      max-width: 600px;
-      margin: auto;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      padding: 10px;
     }
 
-    h1, h2 {
+    h1 {
       text-align: center;
       margin: 1rem 0;
+      font-weight: 600;
     }
 
-    select {
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      margin-left: 10px;
+    .container {
+      flex: 1;
+      display: flex;
+      gap: 15px;
+      max-width: 900px;
+      margin: 0 auto;
+      flex-wrap: wrap;
     }
 
-    .card {
-      background-color: var(--card-bg);
+    .player-card {
+      background: var(--card-bg);
       border-radius: 12px;
-      padding: 20px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+      flex: 1 1 300px;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      min-width: 280px;
+    }
+
+    .player-card h2 {
+      text-align: center;
+      margin-bottom: 15px;
+      font-weight: 600;
+      font-size: 1.5rem;
+    }
+
+    .score-row {
+      font-size: 1.2rem;
+      margin: 8px 0;
+      text-align: center;
+    }
+
+    .scores {
       margin-bottom: 20px;
+      border-top: 1px solid #ddd;
+      padding-top: 10px;
     }
 
     .button-grid {
       display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
+      flex-direction: column;
+      gap: 12px;
     }
 
-    button {
+    button.action-btn {
       background-color: var(--primary);
-      color: white;
       border: none;
-      border-radius: 10px;
-      padding: 10px 16px;
-      font-size: 16px;
+      border-radius: 14px;
+      color: white;
+      font-size: 1.25rem;
+      font-weight: 600;
+      padding: 15px 0;
       cursor: pointer;
-      transition: background-color 0.2s;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.12);
+      transition: background-color 0.2s ease;
+      user-select: none;
     }
 
-    button:hover {
-      background-color: #1b5e20;
-    }
-
-    .score-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 6px 0;
+    button.action-btn:hover {
+      background-color: var(--primary-dark);
     }
 
     #resetBtn {
-      background: #d32f2f;
-      margin: 0 auto;
-      display: block;
+      max-width: 300px;
+      margin: 20px auto 40px;
+      background-color: #d32f2f;
+      color: white;
+      font-weight: 600;
+      font-size: 1.25rem;
+      padding: 15px;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+      user-select: none;
+      transition: background-color 0.3s ease;
+    }
+
+    #resetBtn:hover {
+      background-color: #9a2121;
+    }
+
+    /* Responsive: stack on narrow screens */
+    @media (max-width: 700px) {
+      .container {
+        flex-direction: column;
+        max-width: 100%;
+      }
+      .player-card {
+        min-width: auto;
+      }
     }
   </style>
 </head>
 <body>
   <h1>Wellness Tracker</h1>
 
-  <div class="card">
-    <label>
-      Select Player:
-      <select id="playerSelect">
-        <option value="Husband">Husband</option>
-        <option value="Wife">Wife</option>
-      </select>
-    </label>
+  <div class="container">
+    <section id="playerJonathan" class="player-card" aria-label="Jonathan">
+      <h2>Jonathan</h2>
+
+      <div class="scores">
+        <div class="score-row"><strong>Total Score:</strong> <span id="score-Jonathan">0</span></div>
+        <div class="score-row"><strong>This Week:</strong> <span id="weekly-Jonathan">0</span></div>
+      </div>
+
+      <div class="button-grid">
+        <button class="action-btn" data-player="Jonathan" data-points="5" data-action="Workout">Workout (+5)</button>
+        <button class="action-btn" data-player="Jonathan" data-points="3" data-action="Clean Kitchen">Clean Kitchen (+3)</button>
+        <button class="action-btn" data-player="Jonathan" data-points="4" data-action="Cook Meal">Cook Meal (+4)</button>
+        <button class="action-btn" data-player="Jonathan" data-points="2" data-action="Meditate">Meditate (+2)</button>
+        <button class="action-btn" data-player="Jonathan" data-points="2" data-action="Journal">Journal (+2)</button>
+        <button class="action-btn" data-player="Jonathan" data-points="4" data-action="Creative Task">Creative Task (+4)</button>
+        <button class="action-btn" data-player="Jonathan" data-points="2" data-action="Orgasm">Orgasm (+2)</button>
+      </div>
+    </section>
+
+    <section id="playerWife" class="player-card" aria-label="Wife">
+      <h2>Wife</h2>
+
+      <div class="scores">
+        <div class="score-row"><strong>Total Score:</strong> <span id="score-Wife">0</span></div>
+        <div class="score-row"><strong>This Week:</strong> <span id="weekly-Wife">0</span></div>
+      </div>
+
+      <div class="button-grid">
+        <button class="action-btn" data-player="Wife" data-points="5" data-action="Workout">Workout (+5)</button>
+        <button class="action-btn" data-player="Wife" data-points="3" data-action="Clean Kitchen">Clean Kitchen (+3)</button>
+        <button class="action-btn" data-player="Wife" data-points="4" data-action="Cook Meal">Cook Meal (+4)</button>
+        <button class="action-btn" data-player="Wife" data-points="2" data-action="Meditate">Meditate (+2)</button>
+        <button class="action-btn" data-player="Wife" data-points="2" data-action="Journal">Journal (+2)</button>
+        <button class="action-btn" data-player="Wife" data-points="4" data-action="Creative Task">Creative Task (+4)</button>
+        <button class="action-btn" data-player="Wife" data-points="2" data-action="Orgasm">Orgasm (+2)</button>
+      </div>
+    </section>
   </div>
 
-  <div class="card">
-    <h2>Log Activity</h2>
-    <div class="button-grid">
-      <button data-points="5" data-action="Workout">Workout</button>
-      <button data-points="3" data-action="Clean Kitchen">Clean Kitchen</button>
-      <button data-points="4" data-action="Cook Meal">Cook Meal</button>
-      <button data-points="2" data-action="Meditate">Meditate</button>
-      <button data-points="2" data-action="Journal">Journal</button>
-      <button data-points="4" data-action="Creative Task">Creative</button>
-      <button data-points="2" data-action="Orgasm">Orgasm</button>
-    </div>
-  </div>
-
-  <div class="card">
-    <h2>Total Scores</h2>
-    <div class="score-row"><strong>Husband:</strong> <span id="score-Husband">0</span></div>
-    <div class="score-row"><strong>Wife:</strong> <span id="score-Wife">0</span></div>
-  </div>
-
-  <div class="card">
-    <h2>This Week</h2>
-    <div class="score-row"><strong>Husband:</strong> <span id="weekly-Husband">0</span></div>
-    <div class="score-row"><strong>Wife:</strong> <span id="weekly-Wife">0</span></div>
-  </div>
-
-  <button id="resetBtn">Reset All Data</button>
+  <button id="resetBtn" aria-label="Reset all data">Reset All Data</button>
 
   <script>
-    const players = ['Husband', 'Wife'];
+    const players = ['Jonathan', 'Wife'];
     let actionLog = [];
 
     function loadData() {
@@ -165,9 +218,9 @@
       });
     }
 
-    document.querySelectorAll('#actions button, .button-grid button').forEach(btn => {
+    document.querySelectorAll('.action-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        const player = document.getElementById('playerSelect').value;
+        const player = btn.dataset.player;
         const points = parseInt(btn.dataset.points, 10);
         const action = btn.dataset.action;
         const timestamp = new Date().toISOString();
