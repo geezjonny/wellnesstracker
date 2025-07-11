@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Daily Duel with Password & Weekly Tally</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 500px; margin: 20px auto; }
+    h1, h2 { text-align: center; }
+    button { margin: 5px; padding: 10px 15px; font-size: 16px; }
+    #scores, #weeklyTally { margin-top: 20px; }
+    #appContent { display: none; }
+  </style>
+</head>
+<body>
+  <script>
+    const correctPassword = 'FitnessDuel2025'; // Change this password
+
+    let entered = prompt('Enter password to access the app:');
+    if (entered !== correctPassword) {
+      alert('Wrong password. Access denied.');
+      document.body.innerHTML = '<h1 style="text-align:center; margin-top:50px;">Access Denied</h1>';
+      throw new Error('Access denied');
+    }
+  </script>
+
+  <div id="appContent">
+    <h1>Daily Duel: Track Your Points</h1>
+
+    <label>
+      Select Player:
+      <select id="playerSelect">
+        <option value="Jonathan">Jonathan</option>
+        <option value="Wife">Wife</option>
+      </select>
+    </label>
+
+    <div id="actions">
+      <button data-points="5" data-action="Workout">Workout (+5)</button>
+      <button data-points="3" data-action="Clean Kitchen">Clean Kitchen (+3)</button>
+      <button data-points="4" data-action="Cook Meal">Cook Meal (+4)</button>
+      <button data-points="2" data-action="Meditate">Meditate (+2)</button>
+      <button data-points="2" data-action="Journal">Journal (+2)</button>
+      <button data-points="4" data-action="Creative Task">Creative Task (+4)</button>
+      <button data-points="2" data-action="Orgasm">Orgasm (+2)</button>
+    </div>
+
+    <div id="scores">
+      <h2>Current Scores</h2>
+      <p>Jonathan: <span id="score-Jonathan">0</span></p>
+      <p>Wife: <span id="score-Wife">0</span></p>
+    </div>
+
+    <div id="weeklyTally">
+      <h2>This Week's Points</h2>
+      <p>Jonathan: <span id="weekly-Jonathan">0</span></p>
+      <p>Wife: <span id="weekly-Wife">0</span></p>
+    </div>
+
+    <button id="resetBtn">Reset All Data</button>
+  </div>
+
+  <script>
+    const players = ['Jonathan', 'Wife'];
+    // Store all actions as an array of {player, points, action, timestamp}
+    let actionLog = [];
+
+    // Load saved data
+    function loadData() {
+      const saved = localStorage.getItem('dailyDuelActionLog');
+      if (saved) {
+        actionLog = JSON.parse(saved);
+      } else {
+        actionLog = [];
+      }
+    }
+
+    // Save data
+    function saveData() {
+      localStorage.setItem('dailyDuelActionLog', JSON.stringify(actionLog));
+    }
+
+    // Calculate total scores from actionLog
+    function calculateTotalScores() {
+      let scores = { Jonathan: 0, Wife: 0 };
+      actionLog.forEach(entry => {
+        scores[entry.player] += entry.points;
+      });
+      return scores;
+    }
+
+    // Calculate weekly scores (current week starting Monday)
+    function calculateWeeklyScores() {
+      let scores = { Jonathan: 0, Wife: 0 };
+      const now = new Date();
+      const day = now.getDay(); // Sunday = 0, Monday = 1, ...
+      const diffToMonday = (day + 6) % 7; // days since Monday
+      const monday = new Date(now);
+      monday.setHours(0,0,0,0);
+      monday.setDate(now.getDate() - diffToMonday);
+
+      actionLog.forEach(entry => {
+        const entryDate = new Date(entry.timestamp);
+        if (entryDate >= monday) {
+          scores[entry.player] += entry.points;
+        }
+      });
+      return scores;
+    }
+
+    // Update score displays
+    function updateScores() {
+      const totalScores = calculateTotalScores();
+      players.forEach(player => {
+        document.getElementById(`score-${player}`).textContent = totalScores[player];
+      });
+
+      const weeklyScores = calculateWeeklyScores();
+      players.forEach(player => {
+        document.getElementById(`weekly-${player}`).textContent = weeklyScores[player];
+      });
+    }
+
+    // Add event listeners to action buttons
+    document.querySelectorAll('#actions button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const player = document.getElementById('playerSelect').value;
+        const points = parseInt(btn.dataset.points, 10);
+        const action = btn.dataset.action;
+        const timestamp = new Date().toISOString();
+
+        actionLog.push({ player, points, action, timestamp });
+        alert(`${player} earned ${points} points for "${action}"!`);
+
+        saveData();
+        updateScores();
+      });
+    });
+
+    // Reset data button
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      if (confirm('Reset all data? This cannot be undone.')) {
+        actionLog = [];
+        saveData();
+        updateScores();
+      }
+    });
+
+    // Initialize
+    loadData();
+    updateScores();
+    document.getElementById('appContent').style.display = 'block';
+  </script>
+</body>
+</html>
