@@ -166,35 +166,35 @@
   <h1>Wellness Tracker</h1>
 
   <div class="container">
-    <section id="playerJonathan" class="player-card" aria-label="Jonathan">
-      <h2>Jonathan</h2>
+    <section id="playerHusband" class="player-card" aria-label="Husband">
+      <h2>Husband</h2>
 
       <div class="scores">
-        <div class="score-row"><strong>Total Score:</strong> <span id="score-Jonathan">0</span></div>
-        <div class="score-row"><strong>This Week:</strong> <span id="weekly-Jonathan">0</span></div>
+        <div class="score-row"><strong>Total Score:</strong> <span id="score-Husband">0</span></div>
+        <div class="score-row"><strong>This Week:</strong> <span id="weekly-Husband">0</span></div>
       </div>
 
       <input
         type="text"
-        id="comment-Jonathan"
+        id="comment-Husband"
         class="comment-input"
         placeholder="Optional comment (e.g. treadmill, cleaned fridge)"
-        aria-label="Jonathan activity comment"
+        aria-label="Husband activity comment"
       />
 
       <div class="button-grid">
-        <button class="action-btn" data-player="Jonathan" data-points="5" data-action="Workout">Workout (+5)</button>
-        <button class="action-btn" data-player="Jonathan" data-points="3" data-action="Clean Kitchen">Clean Kitchen (+3)</button>
-        <button class="action-btn" data-player="Jonathan" data-points="4" data-action="Cook Meal">Cook Meal (+4)</button>
-        <button class="action-btn" data-player="Jonathan" data-points="2" data-action="Meditate">Meditate (+2)</button>
-        <button class="action-btn" data-player="Jonathan" data-points="2" data-action="Journal">Journal (+2)</button>
-        <button class="action-btn" data-player="Jonathan" data-points="4" data-action="Creative Task">Creative Task (+4)</button>
-        <button class="action-btn" data-player="Jonathan" data-points="2" data-action="Orgasm">Orgasm (+2)</button>
+        <button class="action-btn" data-player="Husband" data-points="5" data-action="Workout">Workout (+5)</button>
+        <button class="action-btn" data-player="Husband" data-points="3" data-action="Clean Kitchen">Clean Kitchen (+3)</button>
+        <button class="action-btn" data-player="Husband" data-points="4" data-action="Cook Meal">Cook Meal (+4)</button>
+        <button class="action-btn" data-player="Husband" data-points="2" data-action="Meditate">Meditate (+2)</button>
+        <button class="action-btn" data-player="Husband" data-points="2" data-action="Journal">Journal (+2)</button>
+        <button class="action-btn" data-player="Husband" data-points="4" data-action="Creative Task">Creative Task (+4)</button>
+        <button class="action-btn" data-player="Husband" data-points="2" data-action="Orgasm">Orgasm (+2)</button>
       </div>
 
       <div>
         <h3>Last 5 Activities</h3>
-        <div id="log-Jonathan" class="activity-log" aria-live="polite" aria-atomic="true"></div>
+        <div id="log-Husband" class="activity-log" aria-live="polite" aria-atomic="true"></div>
       </div>
     </section>
 
@@ -234,7 +234,7 @@
   <button id="resetBtn" aria-label="Reset all data">Reset All Data</button>
 
   <script>
-    const players = ['Jonathan', 'Wife'];
+    const players = ['Husband', 'Wife'];
     let actionLog = [];
 
     function loadData() {
